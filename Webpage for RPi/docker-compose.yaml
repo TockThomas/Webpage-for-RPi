@@ -1,24 +1,37 @@
-﻿version: '3'
+﻿version: "3.8"
+
+networks:
+  webpage_for_rpi-dev:
+    driver: bridge
+
 services:
   webpage_for_rpi:
-    build: .
-    restart: always
+    image: webpage_for_rpi:latest
+    depends_on:
+      - "postgres"
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8081:80"
-    depends_on:
-      - postgres
-
+    environment:
+      DB_CONNECTION_STRING: "host=postgres; port=5432; database=WEBPAGE_FOR_RPI; username=postgres; password=postgres"
+    networks:
+      - webpage_for_rpi-dev
+        
   postgres:
     image: postgres:latest
-    restart: always
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_DB=WEBPAGE_FOR_RPI
-      - POSTHRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - "5432"
+    restart: always
     volumes:
-      - local_postgres_data:/var/lib/postgresql/data
-
+      - db_volume:/var/lib/postgresql/data
+      - ./dbscripts/seed.sql :/docker-entrypoint-initdb.d/seed.sql
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "WEBPAGE_FOR_RPI"
+    networks:
+      - webpage_for_rpi-dev
 volumes:
-  local_postgres_data:
+  db_volume:
