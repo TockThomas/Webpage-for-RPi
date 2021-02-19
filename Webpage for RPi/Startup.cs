@@ -27,30 +27,37 @@ namespace Webpage_for_RPi
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
         {
-            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(connectionString));
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseNpgsql(Configuration.GetConnectionString("raspberrypi"))
-            //);
+            if (env.IsDevelopment())
+            {
+                var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseNpgsql(connectionString));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("raspberrypi"))
+                );
+            }
             services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            //    app.UseHsts();
+            //}
+            app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
