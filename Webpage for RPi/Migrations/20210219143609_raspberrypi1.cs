@@ -2,7 +2,7 @@
 
 namespace Webpage_for_RPi.Migrations
 {
-    public partial class AddMigrationlocalhost : Migration
+    public partial class raspberrypi1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -9,8 +9,8 @@ using Webpage_for_RPi.Data;
 namespace Webpage_for_RPi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210219135110_AddMigrationlocalhost")]
-    partial class AddMigrationlocalhost
+    [Migration("20210219143609_raspberrypi1")]
+    partial class raspberrypi1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

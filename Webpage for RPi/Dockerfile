@@ -2,16 +2,16 @@
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk AS build
 WORKDIR /src
 COPY *.csproj ./
 RUN dotnet restore
 COPY . ./
 WORKDIR "/src/."
-RUN dotnet build -c Release -o /app
+RUN dotnet build -c Debug -o /app
 
 FROM build as publish
-RUN dotnet publish -c Release -o /app
+RUN dotnet publish -c Debug -o /app
 
 FROM base AS final
 WORKDIR /app

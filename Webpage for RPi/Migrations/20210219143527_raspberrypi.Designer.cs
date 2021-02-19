@@ -9,8 +9,8 @@ using Webpage_for_RPi.Data;
 namespace Webpage_for_RPi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210217163509_addLenderAItemNameColumns")]
-    partial class addLenderAItemNameColumns
+    [Migration("20210219143527_raspberrypi")]
+    partial class raspberrypi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,25 @@ namespace Webpage_for_RPi.Migrations
                 .HasAnnotation("ProductVersion", "6.0.0-preview.1.21102.2")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("Webpage_for_RPi.Models.Expense", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ExpenseName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Expenses");
+                });
+
             modelBuilder.Entity("Webpage_for_RPi.Models.Item", b =>
                 {
                     b.Property<int>("Id")
@@ -28,12 +47,15 @@ namespace Webpage_for_RPi.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Borrower")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ItemName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Lender")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
